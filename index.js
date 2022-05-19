@@ -16115,6 +16115,7 @@ try {
   const projectName = (0, import_core.getInput)("projectName", { required: true });
   const directory = (0, import_core.getInput)("directory", { required: true });
   const gitHubToken = (0, import_core.getInput)("gitHubToken", { required: true });
+  const workingDirectory = (0, import_core.getInput)("workingDirectory", { required: false });
   const octokit = (0, import_github.getOctokit)(gitHubToken);
   const createPagesDeployment = async () => {
     await esm_default`
@@ -16122,8 +16123,10 @@ try {
     if ${accountId} {
       $ export CLOUDFLARE_ACCOUNT_ID="${accountId}"
     }
-  
-    $$ npx wrangler@2 pages publish "${directory}" --project-name="${projectName}"
+    
+    in ${workingDirectory} {
+      $$ npx wrangler@2 pages publish "${directory}" --project-name="${projectName}"
+    }
     `;
     const response = await (0, import_undici.fetch)(`https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects/${projectName}/deployments`, { headers: { Authorization: `Bearer ${apiToken}` } });
     const {
