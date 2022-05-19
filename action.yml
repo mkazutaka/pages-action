@@ -22,6 +22,9 @@ inputs:
   workingDirectory:
     description: "Directory in which to execute"
     required: false
+  branch:
+    description: "The branch of the Pages deployments"
+    required: false
 runs:
   using: "node16"
   main: "index.js"

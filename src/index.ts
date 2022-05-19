@@ -54,8 +54,10 @@ try {
   const directory = getInput("directory", { required: true });
   const gitHubToken = getInput("gitHubToken", { required: true });
   const workingDirectory = getInput("workingDirectory", { required: false });
+  const branch = getInput("branch", { required: false });
 
   const octokit = getOctokit(gitHubToken);
+
 
   const createPagesDeployment = async () => {
     // TODO: Replace this with an API call to wrangler so we can get back a full deployment response object
@@ -66,7 +68,7 @@ try {
     }
     
     in ${workingDirectory} {
-      $$ npx wrangler@2 pages publish "${directory}" --project-name="${projectName}"
+      $$ npx wrangler@2 pages publish "${directory}" --project-name="${projectName}" ${branch !== '' ? `--branch="${branch}"` : ''}
     }
     `;
 
